@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { Entries } from '../api/entries';
 import { entryInsert } from '../api/entryInsert';
+import { entryUpdate } from '../api/entryUpdate';
 import Meteor from 'meteor/meteor';
 
 export default class AddEntry extends Component {
@@ -44,6 +45,7 @@ export default class AddEntry extends Component {
   handleSubmit = (entry) => {
     entry.preventDefault();
     const entryObj = this.state.entry;
+    const isUpdating = this.state.isUpdating;
     let clientSideValidation = true;
 
     console.log('Handling submit');
@@ -66,13 +68,23 @@ export default class AddEntry extends Component {
       }
     }
 
-    if (clientSideValidation) {
+    if (clientSideValidation && !isUpdating) {
       entryInsert.call(entryObj, (err, res) => {
         console.log({entryObj})
         if (err) {
           console.log(err);
         } else {
           console.log(res);
+        }
+      });
+    } else if (clientSideValidation && isUpdating) {
+      console.log('UPDATE VALIDATION METHOD');
+      console.log(entryObj._id);
+      entryUpdate.call(entryObj, (err, res) => {
+        if (err) {
+          console.log(err)
+        } else {
+          console.log(res)
         }
       });
     }

@@ -3,7 +3,7 @@ import { Entries } from '../api/entries';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Meteor } from 'meteor/meteor';
 
-export const ListEntries = ({isSubReady}) => {
+export const ListEntries = ({isSubReady, handleEdit}) => {
   let myEntries = [];
 
   //Only proceed if Sub is ready
@@ -19,9 +19,9 @@ export const ListEntries = ({isSubReady}) => {
     console.log(myEntries)
   }
 
-  handleEdit = (entryId) => {
-    this.props.handleEdit(entryId);
-  }
+  // handleEdit = (entryId) => {
+  //   this.props.handleEdit(entryId);
+  // }
 
   handleDelete = (entryId) => {
     Entries.remove({_id: entryId});
@@ -41,7 +41,7 @@ export const ListEntries = ({isSubReady}) => {
           </div>
           <p className="mb-1">{entry.description}</p>
           <div className="float-right">
-              <button onClick={() => this.handleEdit(entry._id)} className="btn btn-outline-warning" style={{margin: "10px"}}>Edit</button>
+              <button onClick={() => handleEdit(entry._id)} className="btn btn-outline-warning" style={{margin: "10px"}}>Edit</button>
               <button onClick={() => this.handleDelete(entry._id)} className="btn btn-outline-danger">Delete</button>
             </div>
         </div>
