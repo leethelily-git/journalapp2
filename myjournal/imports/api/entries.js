@@ -16,6 +16,15 @@ Entries.allow({
   }
 });
 
+if (Meteor.isServer) {
+  Meteor.publish('entries.list', function() {
+    return Entries.find({
+      // title: "ABC"
+    });
+  });
+}
+
+
 // export const entries = new SimpleSchema({
 //   title: {
 //     type: String,
@@ -34,11 +43,3 @@ Entries.allow({
 // }, {
 //   clean: true,
 // });
-
-if (Meteor.isServer) {
-  Meteor.publish('entries.list', function() {
-    return Entries.find({
-      title: "ABC"
-    });
-  });
-}

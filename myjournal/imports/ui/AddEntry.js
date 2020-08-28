@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { Entries } from '../api/entries';
-import entryValidation from '../api/entryValidation';
+import { entryInsert } from '../api/entryInsert';
 import Meteor from 'meteor/meteor';
 
 export default class AddEntry extends Component {
@@ -44,7 +44,38 @@ export default class AddEntry extends Component {
   handleSubmit = (entry) => {
     entry.preventDefault();
     const entryObj = this.state.entry;
-    // Meteor.call('entryValidation', entryObj);
+    let clientSideValidation = true;
+
+    console.log('Handling submit');
+
+    if (entryObj) {
+      if (entryObj.title == "") {
+        console.log('Title is empty');
+        alert('Title is empty');
+        clientSideValidation = false;
+      }
+      if (entryObj.description == "") {
+        console.log('Description is empty');
+        alert('Description is empty');
+        clientSideValidation = false;
+      }
+      if (entryObj.date == "") {
+        console.log('Date is empty');
+        alert('Date is empty');
+        clientSideValidation = false;
+      }
+    }
+
+    if (clientSideValidation) {
+      entryInsert.call(entryObj, (err, res) => {
+        console.log({entryObj})
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(res);
+        }
+      });
+    }
 
     //Setting local variables from the state variables
     // const { title, description, date } = this.state.entry;
@@ -82,6 +113,7 @@ export default class AddEntry extends Component {
     this.setState({
       entry: newEntry
     });
+    console.log('Cleared input fields on submit')
   }
 
   renderSubmitButton() {
@@ -147,11 +179,3 @@ export default class AddEntry extends Component {
     );
   }
 }
-
-// entryValidation.call(entry, (err, res) => {
-//   if (err) {
-//     console.log(err);
-//   } else {
-//     console.log(res);
-//   }
-// });
