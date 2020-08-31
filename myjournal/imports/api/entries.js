@@ -24,7 +24,6 @@ if (Meteor.isServer) {
   });
 }
 
-
 // export const entries = new SimpleSchema({
 //   title: {
 //     type: String,

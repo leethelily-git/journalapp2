@@ -79,7 +79,7 @@ export default class AddEntry extends Component {
       });
     } else if (clientSideValidation && isUpdating) {
       console.log('UPDATE VALIDATION METHOD');
-      console.log(entryObj._id);
+      console.log({entryObj});
       entryUpdate.call(entryObj, (err, res) => {
         if (err) {
           console.log(err)
@@ -87,6 +87,9 @@ export default class AddEntry extends Component {
           console.log(res)
         }
       });
+      this.setState({
+        isUpdating: false
+      })
     }
 
     //Setting local variables from the state variables

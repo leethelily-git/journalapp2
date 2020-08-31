@@ -3,7 +3,7 @@ import { Entries } from '../api/entries';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Meteor } from 'meteor/meteor';
 
-export const ListEntries = ({isSubReady, handleEdit, handleDelete}) => {
+export const HookListEntries = ({isSubReady, handleEdit, handleDelete}) => {
   let myEntries = [];
 
   //Only proceed if Sub is ready
@@ -107,4 +107,4 @@ export default withTracker(() => {
       isSubReady
     }
   }
-})(ListEntries);
+})(HookListEntries);
