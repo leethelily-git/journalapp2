@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import AddEntry from './AddEntry';
 import ListEntries from './ListEntries';
+import ListEntriesContainer from './ListEntriesContainer';
 import { Entries } from "../api/entries";
 
 import HookAddEntry from './HookAddEntry';
@@ -42,6 +43,7 @@ class App extends Component {
         <HookAddEntry entry={this.state.entry} isUpdating={this.state.isUpdating} />
         {/* <pre>DB Stuff: {JSON.stringify(this.props, null, ' ')} </pre> */}
         {/* <ListEntries handleEdit={this.handleEdit} handleDelete={this.handleDelete}/> */}
+        {/* <ListEntriesContainer handleEdit={this.handleEdit} handleDelete={this.handleDelete}/> */}
         <HookListEntries handleEdit={this.handleEdit} handleDelete={this.handleDelete}/>
       </div>
     );

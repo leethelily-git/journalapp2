@@ -28,8 +28,9 @@ const HookAddEntry = (props) => {
   console.log(entry)
   console.log(isUpdating)
 
-  handleSubmit = (entry) =>  {
-    // entry.preventDefault();
+  handleSubmit = (entry, e) =>  {
+    e.preventDefault();
+
     const entryObj = entry;
     let clientSideValidation = true;
 
@@ -103,7 +104,7 @@ const HookAddEntry = (props) => {
         <hr />
 
         <div className="jumbotron" style={{ margin: "0 500px" }}>
-          <form onSubmit={() => handleSubmit(entry)}>
+          <form onSubmit={e => handleSubmit(entry, e)}>
 
             <div className="form-group">
               <label>Title:</label>

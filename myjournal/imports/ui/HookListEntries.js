@@ -3,23 +3,16 @@ import { Entries } from '../api/entries';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Meteor } from 'meteor/meteor';
 
-export const HookListEntries = ({isSubReady, handleEdit, handleDelete}) => {
-  let myEntries = [];
-
+export const HookListEntries = ({isSubReady, myEntries, handleEdit, handleDelete}) => {
   //Only proceed if Sub is ready
-  if (isSubReady) {
-    //Sub is ready: true
-    console.log(isSubReady);
-    myEntries = Entries.find({}).fetch();
+  // if (isSubReady) {
+  //   //Sub is ready: true
+  //   console.log(isSubReady);
+  //   //Display the entries in array object
+  //   console.log(myEntries)
+  // }
 
-    //Collecting entries from publication
-    console.log('Collecting entries from publication')
-
-    //Display the entries in array object
-    console.log(myEntries)
-  }
-
-  const [elements, setElements] = useState([]);
+  // const [elements, setElements] = useState([]);
 
   renderEntries = () => {
     let elements = [];
@@ -35,8 +28,8 @@ export const HookListEntries = ({isSubReady, handleEdit, handleDelete}) => {
           </div>
           <p className="mb-1">{entry.description}</p>
           <div className="float-right">
-              <button onClick={() => setElements(handleEdit(entry._id))} className="btn btn-outline-warning" style={{margin: "10px"}}>Edit</button>
-              <button onClick={() => setElements(handleDelete(entry._id))} className="btn btn-outline-danger">Delete</button>
+              <button onClick={() => handleEdit(entry._id)} className="btn btn-outline-warning" style={{margin: "10px"}}>Edit</button>
+              <button onClick={() => handleDelete(entry._id)} className="btn btn-outline-danger">Delete</button>
             </div>
         </div>
       </div>
@@ -57,54 +50,14 @@ export const HookListEntries = ({isSubReady, handleEdit, handleDelete}) => {
   )
 };
 
-// export default ListEntries;
-
-//////////////////////////////////////////
-
-
-// class ListEntries extends Component {
-
-//   handleEdit = (entryId) => {
-
-//     this.props.handleEdit(entryId);
-//   }
-
-//   handleDelete = (entryId) => {
-
-//     Entries.remove({_id: entryId})
-//   }
-
-//   render() {
-
-//     return (
-//       <div>
-//         {this.props.entries.map((entry) => (
-//           <div className="list-group" key={entry._id} style={{ margin: "20px 100px" }}>
-//             <div className="list-group-item list-group-item-action flex-column align-items-start">
-//               <div className="d-flex w-100 justify-content-between">
-//                 <h5 className="mb-1">{entry.title}</h5>
-//                 <p>{entry.date}</p>
-//               </div>
-//               <p className="mb-1">{entry.description}</p>
-//               <div className="float-right">
-//                   <button onClick={() => this.handleEdit(entry._id)} className="btn btn-outline-warning" style={{margin: "10px"}}>Edit</button>
-//                   <button onClick={() => this.handleDelete(entry._id)} className="btn btn-outline-danger">Delete</button>
-//                 </div>
-//             </div>
-//           </div>
-//         ))}
-//       </div>
-//     );
-//   }
-// }
-
 export default withTracker(() => {
   const entriesSub = Meteor.subscribe('entries.list');
   const isSubReady = entriesSub.ready();
+  const myEntries = Entries.find({}).fetch()
   if (isSubReady) {
-    console.log("IM THE TRACKER");
+    console.log("IN THE TRACKER");
     return {
-      isSubReady
+      isSubReady, myEntries
     }
   }
 })(HookListEntries);

@@ -1,30 +1,41 @@
-import React, { useState, useEffect } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import { Entries } from '../api/entries';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Meteor } from 'meteor/meteor';
 
-export const ListEntries = ({isSubReady, handleEdit, handleDelete}) => {
-  let myEntries = [];
-
-  //Only proceed if Sub is ready
-  if (isSubReady) {
-    //Sub is ready: true
-    console.log(isSubReady);
-    myEntries = Entries.find({}).fetch();
-
-    //Collecting entries from publication
-    console.log('Collecting entries from publication')
-
-    //Display the entries in array object
-    console.log(myEntries)
+export class ListEntries extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      myEntries: [],
+      isSubReady: false
+    }
   }
 
-  const [elements, setElements] = useState([]);
+  componentDidUpdate(prevProps) {
+    console.log(this.props)
+    if (prevProps.isSubReady !== this.props.isSubReady) {
+      this.setState({
+        isSubReady: this.props.isSubReady
+      });
+      console.log(this.props.isSubReady)
+      if (this.props.isSubReady) {
+        console.log("Sub is ready and currently fetching collections from publication")
+        this.setState({
+          myEntries: Entries.find({}).fetch()
+        })
+        console.log('Collecting entries from publication');
+      }
+      console.log(this.myEntries)
+      console.log(Entries.find({}).fetch())
+    }
+  }
 
   renderEntries = () => {
     let elements = [];
     console.log('Rendering entries')
-    myEntries.forEach((entry, i) => {
+    console.log(this.state.myEntries)
+    this.state.myEntries.forEach((entry, i) => {
       console.log('Pushing elements')
       elements.push(
         <div className="list-group" key={entry._id} style={{ margin: "20px 100px" }}>
@@ -35,8 +46,8 @@ export const ListEntries = ({isSubReady, handleEdit, handleDelete}) => {
           </div>
           <p className="mb-1">{entry.description}</p>
           <div className="float-right">
-              <button onClick={() => setElements(handleEdit(entry._id))} className="btn btn-outline-warning" style={{margin: "10px"}}>Edit</button>
-              <button onClick={() => setElements(handleDelete(entry._id))} className="btn btn-outline-danger">Delete</button>
+              <button onClick={this.props.handleEdit(entry._id)} className="btn btn-outline-warning" style={{margin: "10px"}}>Edit</button>
+              <button onClick={this.props.handleDelete(entry._id)} className="btn btn-outline-danger">Delete</button>
             </div>
         </div>
       </div>
@@ -45,66 +56,29 @@ export const ListEntries = ({isSubReady, handleEdit, handleDelete}) => {
     return elements;
   }
 
-  return (
-    isSubReady ?
-    <div>
-      { renderEntries() }
-    </div>
-    :
-    <div>
-      Loading...
-    </div>
-  )
-};
-
-// export default ListEntries;
-
-//////////////////////////////////////////
-
-
-// class ListEntries extends Component {
-
-//   handleEdit = (entryId) => {
-
-//     this.props.handleEdit(entryId);
-//   }
-
-//   handleDelete = (entryId) => {
-
-//     Entries.remove({_id: entryId})
-//   }
-
-//   render() {
-
-//     return (
-//       <div>
-//         {this.props.entries.map((entry) => (
-//           <div className="list-group" key={entry._id} style={{ margin: "20px 100px" }}>
-//             <div className="list-group-item list-group-item-action flex-column align-items-start">
-//               <div className="d-flex w-100 justify-content-between">
-//                 <h5 className="mb-1">{entry.title}</h5>
-//                 <p>{entry.date}</p>
-//               </div>
-//               <p className="mb-1">{entry.description}</p>
-//               <div className="float-right">
-//                   <button onClick={() => this.handleEdit(entry._id)} className="btn btn-outline-warning" style={{margin: "10px"}}>Edit</button>
-//                   <button onClick={() => this.handleDelete(entry._id)} className="btn btn-outline-danger">Delete</button>
-//                 </div>
-//             </div>
-//           </div>
-//         ))}
-//       </div>
-//     );
-//   }
-// }
-
-export default withTracker(() => {
-  const entriesSub = Meteor.subscribe('entries.list');
-  const isSubReady = entriesSub.ready();
-  if (isSubReady) {
-    console.log("IM THE TRACKER");
-    return {
-      isSubReady
+  render() {
+    console.log(this.state.isSubReady)
+    let result = <div>hello</div>
+    if (this.state.isSubReady) {
+      result = <div>{this.renderEntries()}</div>
+    } else {
+      result = <div>Loading...</div>
     }
-  }
-})(ListEntries);
+    return (
+      result
+    );
+  };
+}
+
+export default ListEntries;
+
+// export default withTracker(() => {
+//   const entriesSub = Meteor.subscribe('entries.list');
+//   const isSubReady = entriesSub.ready();
+//   if (isSubReady) {
+//     console.log("IM THE TRACKER");
+//     return {
+//       isSubReady
+//     }
+//   }
+// })(ListEntries);

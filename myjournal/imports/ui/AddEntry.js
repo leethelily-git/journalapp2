@@ -92,32 +92,6 @@ export default class AddEntry extends Component {
       })
     }
 
-    //Setting local variables from the state variables
-    // const { title, description, date } = this.state.entry;
-
-    //Inserting the local variables into the mongodb entries collection
-    // if (!this.state.isUpdating) {
-    //   Entries.insert({
-    //     title,
-    //     description,
-    //     date
-    //   });
-    //   console.log('Successful insert')
-    // } else {
-    //   Entries.update(this.state.entry._id, {
-    //     $set: {
-    //       title,
-    //       description,
-    //       date
-    //     }
-    //   });
-    //   console.log('Successful update')
-      
-    //   this.setState({
-    //     isUpdating: false
-    //   })
-    // }
-
     const newEntry = {
       title: "",
       description: "",
