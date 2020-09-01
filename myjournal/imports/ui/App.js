@@ -28,7 +28,8 @@ class App extends Component {
       isUpdating: true,
       entryId: entryId
     })
-    console.log('Editing in App.js')
+    console.log('Editing in App.js');
+    console.log(this.state.isUpdating);
   }
 
   handleDelete = (entryId) => {
@@ -40,7 +41,9 @@ class App extends Component {
     return (
       <div>
         {/* <AddEntry entry={this.state.entry} isUpdating={this.state.isUpdating} /> */}
-        <HookAddEntry entry={this.state.entry} isUpdating={this.state.isUpdating} />
+        <HookAddEntry entry={this.state.entry} isUpdating={this.state.isUpdating} 
+        resetState={(entryReset = {}, isUpdatingReset = false, entryIdReset = "") => this.setState({entry: entryReset,
+         isUpdating: isUpdatingReset, entryId: entryIdReset})}/>
         {/* <pre>DB Stuff: {JSON.stringify(this.props, null, ' ')} </pre> */}
         {/* <ListEntries handleEdit={this.handleEdit} handleDelete={this.handleDelete}/> */}
         {/* <ListEntriesContainer handleEdit={this.handleEdit} handleDelete={this.handleDelete}/> */}

@@ -13,6 +13,7 @@ const HookAddEntry = (props) => {
   const [isUpdating, setUpdating] = useState(false);
   
   //useEffect for the change in props
+
   useEffect(() => {
     setEntry(props.entry);
   }, [props.entry]);
@@ -41,16 +42,19 @@ const HookAddEntry = (props) => {
         console.log('Title is empty');
         alert('Title is empty');
         clientSideValidation = false;
+        props.resetState()
       }
       if (entryObj.description == "") {
         console.log('Description is empty');
         alert('Description is empty');
         clientSideValidation = false;
+        props.resetState()
       }
       if (entryObj.date == "") {
         console.log('Date is empty');
         alert('Date is empty');
         clientSideValidation = false;
+        props.resetState()
       }
       
       if (clientSideValidation && !isUpdating) {
@@ -74,6 +78,7 @@ const HookAddEntry = (props) => {
         });
 
         setUpdating(false);
+        props.resetState();
       }
 
       const newEntry = {
