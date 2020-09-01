@@ -37,13 +37,19 @@ class App extends Component {
     console.log('Successfuly deleted entry');
   }
 
+  resetState = () => {
+    this.setState({
+      entry: {},
+      isUpdating: false,
+      entryId: ""
+    })
+  }
+
   render() {
     return (
       <div>
         {/* <AddEntry entry={this.state.entry} isUpdating={this.state.isUpdating} /> */}
-        <HookAddEntry entry={this.state.entry} isUpdating={this.state.isUpdating} 
-        resetState={(entryReset = {}, isUpdatingReset = false, entryIdReset = "") => this.setState({entry: entryReset,
-         isUpdating: isUpdatingReset, entryId: entryIdReset})}/>
+        <HookAddEntry entry={this.state.entry} isUpdating={this.state.isUpdating} resetState={this.resetState}/>
         {/* <pre>DB Stuff: {JSON.stringify(this.props, null, ' ')} </pre> */}
         {/* <ListEntries handleEdit={this.handleEdit} handleDelete={this.handleDelete}/> */}
         {/* <ListEntriesContainer handleEdit={this.handleEdit} handleDelete={this.handleDelete}/> */}
