@@ -1,18 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { Entries } from '../api/entries';
-import { withTracker } from 'meteor/react-meteor-data';
+import { withTracker, useTracker } from 'meteor/react-meteor-data';
 import { Meteor } from 'meteor/meteor';
 
-export const HookListEntries = ({isSubReady, myEntries, handleEdit, handleDelete}) => {
-  //Only proceed if Sub is ready
-  // if (isSubReady) {
-  //   //Sub is ready: true
-  //   console.log(isSubReady);
-  //   //Display the entries in array object
-  //   console.log(myEntries)
-  // }
+//useTracker implementation
+const useEntries = () => useTracker(() => {
+  const entriesSub = Meteor.subscribe('entries.list');
+  const isSubReady = entriesSub.ready();
+  const e = Entries.find({}).fetch()
+  return {
+      isSubReady, e
+  }
+}, [])
 
-  // const [elements, setElements] = useState([]);
+export const HookListEntries = ({handleEdit, handleDelete}) => {
+  const [ready, setReady] = useState(false);
+  const [myEntries, setMyEntries] = useState([]);
+  const { isSubReady, e } = useEntries()
+
+  useEffect(() => {
+    setReady(isSubReady)
+  }, [isSubReady])
+
+  useEffect(() => {
+    setMyEntries(e)
+  }, [e])
 
   renderEntries = () => {
     let elements = [];
@@ -39,7 +51,7 @@ export const HookListEntries = ({isSubReady, myEntries, handleEdit, handleDelete
   }
 
   return (
-    isSubReady ?
+    ready ?
     <div>
       { renderEntries() }
     </div>
@@ -50,14 +62,16 @@ export const HookListEntries = ({isSubReady, myEntries, handleEdit, handleDelete
   )
 };
 
-export default withTracker(() => {
-  const entriesSub = Meteor.subscribe('entries.list');
-  const isSubReady = entriesSub.ready();
-  const myEntries = Entries.find({}).fetch()
-  if (isSubReady) {
-    console.log("IN THE TRACKER");
-    return {
-      isSubReady, myEntries
-    }
-  }
-})(HookListEntries);
+//withTracker implementation
+
+// export default withTracker(() => {
+//   const entriesSub = Meteor.subscribe('entries.list');
+//   const isSubReady = entriesSub.ready();
+//   const myEntries = Entries.find({}).fetch()
+//   if (isSubReady) {
+//     console.log("IN THE TRACKER");
+//     return {
+//       isSubReady, myEntries
+//     }
+//   }
+// })(HookListEntries);

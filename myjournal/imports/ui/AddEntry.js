@@ -55,16 +55,19 @@ export default class AddEntry extends Component {
         console.log('Title is empty');
         alert('Title is empty');
         clientSideValidation = false;
+        this.props.resetState()
       }
       if (entryObj.description == "") {
         console.log('Description is empty');
         alert('Description is empty');
         clientSideValidation = false;
+        this.props.resetState()
       }
       if (entryObj.date == "") {
         console.log('Date is empty');
         alert('Date is empty');
         clientSideValidation = false;
+        this.props.resetState()
       }
     }
 
@@ -90,6 +93,7 @@ export default class AddEntry extends Component {
       this.setState({
         isUpdating: false
       })
+      this.props.resetState()
     }
 
     const newEntry = {

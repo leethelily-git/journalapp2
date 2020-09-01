@@ -5,7 +5,7 @@ import ListEntriesContainer from './ListEntriesContainer';
 import { Entries } from "../api/entries";
 
 import HookAddEntry from './HookAddEntry';
-import HookListEntries from './HookListEntries';
+import { HookListEntries } from './HookListEntries';
 
 // Create a new React Component `App`
 class App extends Component {
@@ -48,7 +48,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        {/* <AddEntry entry={this.state.entry} isUpdating={this.state.isUpdating} /> */}
+        {/* <AddEntry entry={this.state.entry} isUpdating={this.state.isUpdating} resetState={this.resetState}/> */}
         <HookAddEntry entry={this.state.entry} isUpdating={this.state.isUpdating} resetState={this.resetState}/>
         {/* <pre>DB Stuff: {JSON.stringify(this.props, null, ' ')} </pre> */}
         {/* <ListEntries handleEdit={this.handleEdit} handleDelete={this.handleDelete}/> */}
